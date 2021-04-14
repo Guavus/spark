@@ -6,7 +6,12 @@ ARG spark_uid=185
 
 USER root
 
-RUN apt-get update && \
+COPY gnutls-3.7.1-2.fc35.aarch64.rpm /tmp/
+
+RUN apt-get update -y && \
+    apt-get install -y libzstd-dev && \
+    apt-get install alien && \
+    alien -i /tmp/gnutls-3.7.1-2.fc35.aarch64.rpm && \ 
     apt-get -y install curl && \
     curl -fSL http://artifacts.ggn.in.guavus.com:8081/artifactory/libs-release-local/org/elasticsearch/elasticsearch-hadoop-core/7.8.1_3.0.0/elasticsearch-hadoop-core-7.8.1_3.0.0.jar -o elasticsearch-hadoop-core-7.8.1_3.0.0.jar && \
     curl -fSL http://artifacts.ggn.in.guavus.com:8081/artifactory/libs-release-local/org/elasticsearch/elasticsearch-hadoop-mr/7.8.1_3.0.0/elasticsearch-hadoop-mr-7.8.1_3.0.0.jar -o elasticsearch-hadoop-mr-7.8.1_3.0.0.jar && \
@@ -40,7 +45,6 @@ RUN apt-get update && \
     mv kafka-clients-2.2.0.jar /opt/spark/jars/ && \
     mv spark-streaming-kafka-0-10_2.12-3.0.0.jar /opt/spark/jars/ && \
     mv jmx_prometheus_javaagent-0.13.0.jar /opt/spark/jars/
-
 
 
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
