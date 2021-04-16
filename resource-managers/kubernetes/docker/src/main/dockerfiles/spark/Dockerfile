@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ARG java_image_tag=openjdk:14-jdk
 
-FROM openjdk:${java_image_tag}
+ARG java_image_tag=11.0-jdk-slim-sid
+
+FROM artifacts.ggn.in.guavus.com:4244/openjdk:${java_image_tag}
 
 ARG spark_uid=185
 
@@ -27,17 +28,16 @@ ARG spark_uid=185
 # of the Spark distribution. E.g.:
 # docker build -t spark:latest -f kubernetes/dockerfiles/spark/Dockerfile .
 
+USER root
+
 RUN set -ex && \
-    apt-get update && \
     ln -s /lib /lib64 && \
-    apt install -y bash tini libc6 libpam-modules krb5-user libnss3 && \
     mkdir -p /opt/spark && \
     mkdir -p /opt/spark/examples && \
     mkdir -p /opt/spark/work-dir && \
     touch /opt/spark/RELEASE && \
     rm /bin/sh && \
     ln -sv /bin/bash /bin/sh && \
-    echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd && \
     rm -rf /var/cache/apt/*
 

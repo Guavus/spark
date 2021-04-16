@@ -1,4 +1,4 @@
-ARG spark_image_tag=3.0.0-1-hadoop3.2-1.0
+ARG spark_image_tag=3.0.0-3-hadoop3.2-1.3
 
 FROM artifacts.ggn.in.guavus.com:4244/spark:${spark_image_tag}
 
@@ -41,7 +41,6 @@ RUN apt-get update -y && \
     mv kafka-clients-2.2.0.jar /opt/spark/jars/ && \
     mv spark-streaming-kafka-0-10_2.12-3.0.0.jar /opt/spark/jars/ && \
     mv jmx_prometheus_javaagent-0.13.0.jar /opt/spark/jars/
-
 
 
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
